@@ -2,10 +2,13 @@
 package me.chievent.demoaidl;
 
 import me.chievent.demoaidl.Book;
+import me.chievent.demoaidl.IBookCallback;
 
 interface IBookManager {
     List<Book> getBookList();
     void addBook(in Book book);
+    void registerListener(IBookCallback callback);
+    void unregisterListener(IBookCallback callback);
 }
 
 ///*

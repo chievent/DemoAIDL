@@ -18,10 +18,25 @@ public class ClientAct extends AppCompatActivity {
     private int mCount;
     private IBookManager mIBookManager;
 
+    private IBookCallback mBookCallback = new IBookCallback.Stub() {
+
+        @Override
+        public void onBookAdded(Book book) throws RemoteException {
+            Log.d("DemoAIDL", "ClientAct, onBookAdded");
+        }
+    };
+
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mIBookManager = IBookManager.Stub.asInterface(iBinder);
+            try {
+                mIBookManager.registerListener(mBookCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                Log.d("DemoAIDL", "ClientAct", e);
+                return;
+            }
             Log.d("DemoAIDL", "ClientAct, onServiceConnected");
         }
 
